@@ -18,15 +18,25 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <div>
+    <body>
       <NavBar>
         <div>User</div>
       </NavBar>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div className="leftBox">
-          <div className="leftBoxBoardButton">leftBoxBoardButton</div>
-          <div className="leftBoxTemplatesRedirect">leftBoxTemplatesRedirect</div>
-        </div>
+      <div style={{ display: "flex", justifyContent: "center", margin: "40px 0 40px 0" }}>
+        <nav className="homeLeftSidebarContainer"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: "256px",
+          minWidth: "60px",
+        }}>
+          <div className="homeLeftSidebarBoardsButton">
+            <button>Boards</button>
+          </div>
+          <div className="homeLeftSidebarTemplatesButton">
+            <button>Templates</button>
+          </div>
+        </nav>
         <div className="mainBox">
           <div className="mostPopularTemplatesContainer">mostPopularTemplatesContainer</div>
           <div className="recentlyViews">recentlyViews</div>
@@ -34,6 +44,8 @@ export const Dashboard: React.FC = () => {
           <button onClick={handleLogout}>Logout</button>
         </div>
       </div>
-    </div>
+    </body>
   );
 };
+
+

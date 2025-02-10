@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import DropdownNavBar from "../../shared/ui/DropdownNavBar/DropdownNavBar.tsx";
 
 interface NavProps {
@@ -6,7 +6,7 @@ interface NavProps {
 }
 
 export const NavBar = ({children}: NavProps) => {
-
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <nav
       style={{
@@ -76,18 +76,67 @@ export const NavBar = ({children}: NavProps) => {
                justifyContent: 'center',
                alignItems: "center",
              }}>
-          <button type="button" aria-label="Create board or Workspace"
+          <p>
+            <div style={{position: "relative", display: "inline-block"}}>
+              <button
+                style={{
+                  backgroundColor: "#2563eb",
+                  color: "white",
+                  padding: "0.5rem 1rem",
+                  borderRadius: "0.2rem",
+                  cursor: "pointer",
+                  height: "32px",
+                  fontWeight: "bold",
+                }}
+                onClick={() => setIsOpen(!isOpen)}
+                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#1d4ed8")}
+                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#2563eb")}
+              >
+                Create board
+              </button>
+              {isOpen && (
+                <div
                   style={{
-                    backgroundColor: "#2563eb",
-                    color: "white",
-                    padding: "0.5rem 1rem",
-                    borderRadius: "0.2rem",
+                    position: "absolute",
+                    marginTop: "0.5rem",
+                    width: "16rem",
+                    backgroundColor: "white",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                    borderRadius: "0.5rem",
+                    zIndex: 10,
+                  }}
+                >
+                  <button className="createBoardButton"
+                  style={{
+                    width: "280px",
+                    height: "88px",
+                    textAlign: "left",
+                    padding: "6px 12px",
                     cursor: "pointer",
-                    height: "32px",
-                    fontWeight: "bold",
                   }}>
-            <p>Create</p>
-          </button>
+                    <h1>Create board</h1>
+                    <div>
+                      A board is a collection of cards organized into lists. Use it to manage a project, track, or
+                      organize anything.
+                    </div>
+                  </button>
+                  <button className="createBoardWithTemplatesButton"
+                          style={{
+                            width: "280px",
+                            height: "56px",
+                            textAlign: "left",
+                            padding: "6px 12px",
+                            cursor: "pointer",
+                          }}>
+                    <h1>Starts with templates</h1>
+                    <div>
+                      Get started faster with a board template.
+                    </div>
+                  </button>
+                </div>
+              )}
+            </div>
+          </p>
         </div>
 
       </div>

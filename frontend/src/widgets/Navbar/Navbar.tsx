@@ -7,6 +7,7 @@ interface NavProps {
 
 export const NavBar = ({children}: NavProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenCreateBoardModal, setIsOpenCreateBoardModal] = useState(false);
   return (
     <nav
       style={{
@@ -76,67 +77,118 @@ export const NavBar = ({children}: NavProps) => {
                justifyContent: 'center',
                alignItems: "center",
              }}>
-          <p>
-            <div style={{position: "relative", display: "inline-block"}}>
-              <button
+          <div style={{position: "relative", flexDirection: "row",}}>
+            <button
+              style={{
+                backgroundColor: "#2563eb",
+                color: "white",
+                padding: "0.5rem 1rem",
+                borderRadius: "0.2rem",
+                cursor: "pointer",
+                height: "32px",
+                fontWeight: "bold",
+              }}
+              onClick={() => setIsOpen(!isOpen)}
+              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#1d4ed8")}
+              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#2563eb")}
+            >
+              Create board
+            </button>
+            {isOpen && (
+              <div
                 style={{
-                  backgroundColor: "#2563eb",
-                  color: "white",
-                  padding: "0.5rem 1rem",
-                  borderRadius: "0.2rem",
-                  cursor: "pointer",
-                  height: "32px",
-                  fontWeight: "bold",
+                  position: "absolute",
+                  marginTop: "0.5rem",
+                  width: "16rem",
+                  backgroundColor: "white",
+                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                  borderRadius: "0.5rem",
+                  zIndex: 10,
                 }}
-                onClick={() => setIsOpen(!isOpen)}
-                onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#1d4ed8")}
-                onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#2563eb")}
               >
-                Create board
-              </button>
-              {isOpen && (
-                <div
-                  style={{
-                    position: "absolute",
-                    marginTop: "0.5rem",
-                    width: "16rem",
-                    backgroundColor: "white",
-                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                    borderRadius: "0.5rem",
-                    zIndex: 10,
-                  }}
-                >
-                  <button className="createBoardButton"
-                  style={{
-                    width: "280px",
-                    height: "88px",
-                    textAlign: "left",
-                    padding: "6px 12px",
-                    cursor: "pointer",
-                  }}>
+                  <button
+                    className="createBoardButton"
+                    onClick={() => setIsOpenCreateBoardModal(!isOpenCreateBoardModal)}
+                    style={{
+                      width: "280px",
+                      height: "88px",
+                      textAlign: "left",
+                      padding: "6px 12px",
+                      cursor: "pointer",
+                      position: "relative",
+                      zIndex: 1, // Поднимаем кнопку выше других элементов
+                    }}
+                  >
                     <h1>Create board</h1>
                     <div>
                       A board is a collection of cards organized into lists. Use it to manage a project, track, or
                       organize anything.
                     </div>
                   </button>
-                  <button className="createBoardWithTemplatesButton"
+
+                  {isOpenCreateBoardModal && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: 0, // Смещаем модальное окно к верхнему краю кнопки
+                        left: 0, // Прижимаем к левому краю кнопки
+                        width: "280px",
+                        backgroundColor: "white",
+                        boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                        borderRadius: "0.5rem",
+                        zIndex: 20, // Поднимаем окно выше кнопки
+                        padding: "8px",
+                      }}
+                    >
+                      <div
+                        className="buttonContainer"
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <button
+                          type="button"
+                          onClick={() => setIsOpenCreateBoardModal(false)}
                           style={{
-                            width: "280px",
-                            height: "56px",
-                            textAlign: "left",
-                            padding: "6px 12px",
+                            borderRadius: "0.2rem",
+                            border: "none",
+                            height: "32px",
+                            width: "32px",
+                            backgroundColor: "white",
                             cursor: "pointer",
-                          }}>
-                    <h1>Starts with templates</h1>
-                    <div>
-                      Get started faster with a board template.
+                          }}
+                          onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#e0e1dd")}
+                          onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#ffffff")}
+                        >
+                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                               xmlns="http://www.w3.org/2000/svg">
+                            <path
+                              d="M7.29289 11.2929L14.364 4.22185C14.7545 3.83132 15.3876 3.83132 15.7782 4.22185C16.1687 4.61237 16.1687 5.24554 15.7782 5.63606L9.41421 12L15.7782 18.364C16.1687 18.7545 16.1687 19.3877 15.7782 19.7782C15.3877 20.1687 14.7545 20.1687 14.364 19.7782L7.29289 12.7071C6.90237 12.3166 6.90237 11.6834 7.29289 11.2929Z"
+                              fill="currentColor"
+                            ></path>
+                          </svg>
+                        </button>
+                      </div>
+                      Hello world
                     </div>
-                  </button>
-                </div>
-              )}
-            </div>
-          </p>
+                  )}
+                <button className="createBoardWithTemplatesButton"
+                        style={{
+                          width: "280px",
+                          height: "56px",
+                          textAlign: "left",
+                          padding: "6px 12px",
+                          cursor: "pointer",
+                        }}>
+                  <h1>Starts with templates</h1>
+                  <div>
+                    Get started faster with a board template.
+                  </div>
+                </button>
+              </div>
+            )}
+          </div>
         </div>
 
       </div>

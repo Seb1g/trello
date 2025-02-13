@@ -23,14 +23,16 @@ router.post('/register', async (req, res) => {
         email,
         password: hashedPassword
     };
-    users.push(newUser);
 
     // Генерация JWT-токена
     const token = jwt.sign(
         { id: newUser.id, email: newUser.email },
         process.env.JWT_SECRET,
-        { expiresIn: '1h' }
+        { expiresIn: '31d' }
     );
+    newUser.token = token;
+
+    users.push(newUser);
 
     res.status(201).json({
         user: { id: newUser.id, name: newUser.name, email: newUser.email },
@@ -54,16 +56,29 @@ router.post('/login', async (req, res) => {
         return res.status(400).json({ message: 'Неверные учетные данные' });
     }
 
-    // Генерация JWT-токена
-    const token = jwt.sign(
-        { id: user.id, email: user.email },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' }
-    );
+    res.json({
+        user: { id: user.id, name: user.name, email: user.email },
+        token: user.token,
+    });
+});
+
+router.post('/checkToken', async (req, res) => {
+    const { email, token } = req.body;
+
+    const user = users.find(user => user.email === email);
+    if (!user) {
+        return res.status(400).json({ message: 'Неверные учетные данные' });
+    }
+
+    // Сравнение паролей
+    const isMatch = token === user.token;
+    if (!isMatch) {
+        return res.status(400).json({ message: 'Токен устарел' });
+    }
 
     res.json({
         user: { id: user.id, name: user.name, email: user.email },
-        token
+        isLoggedIn: true
     });
 });
 

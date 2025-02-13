@@ -15,9 +15,17 @@ export const Dashboard: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate(); // Вызов хука на верхнем уровне компонента
   const {user} = useAppSelector((state) => state.auth);
+  const token = useAppSelector((state) => state.auth.token);
+
+  if (user !== null && token !== null) {
+    localStorage.setItem("token", token);
+    localStorage.setItem("email", user.email);
+  }
 
   const handleLogout = () => {
     dispatch(logout());
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
     navigate('/login');
   };
   return (

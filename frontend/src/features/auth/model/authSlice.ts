@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../app/store';
-import {getMe, login, register } from './authThunks';
+import {check, getMe, login, register} from './authThunks';
 
 export interface User {
   id: number;
@@ -11,6 +11,7 @@ export interface User {
 interface AuthState {
   user: User | null;
   token: string | null;
+  isLoggedIn: boolean;
   loading: boolean;
   error: string | null;
 }
@@ -18,6 +19,7 @@ interface AuthState {
 const initialState: AuthState = {
   user: null,
   token: null,
+  isLoggedIn: false,
   loading: false,
   error: null,
 };
@@ -47,6 +49,20 @@ const authSlice = createSlice({
       state.token = action.payload.token;
     });
     builder.addCase(login.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload || 'Ошибка входа';
+    });
+
+    builder.addCase(check.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    builder.addCase(check.fulfilled, (state, action: PayloadAction<{ user: User; isLoggedIn: boolean }>) => {
+      state.loading = false;
+      state.user = action.payload.user;
+      state.isLoggedIn = action.payload.isLoggedIn;
+    });
+    builder.addCase(check.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload || 'Ошибка входа';
     });

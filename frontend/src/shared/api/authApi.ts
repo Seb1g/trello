@@ -11,6 +11,11 @@ export interface RegisterData {
   password: string;
 }
 
+export interface checkCredentials {
+  email: string;
+  token: string;
+}
+
 // Функция для логина
 export const loginApi = (credentials: LoginCredentials) => {
   return apiClient.post('/auth/login', credentials);
@@ -20,6 +25,10 @@ export const loginApi = (credentials: LoginCredentials) => {
 export const registerApi = (data: RegisterData) => {
   return apiClient.post('/auth/register', data);
 };
+
+export const checkToken = (data: checkCredentials) => {
+  return apiClient.post('/auth/checkToken', data);
+}
 
 // Функция для получения данных текущего пользователя
 export const getMeApi = (token: string) => {

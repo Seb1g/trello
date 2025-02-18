@@ -1,30 +1,47 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware');
+const boards = [];
 
-const boards = []; // In-memory хранилище досок
-
-// Создание новой доски
-router.post('/', authMiddleware, (req, res) => {
-    const { title, description } = req.body;
+router.post('/create_board', (req, res) => {
+    console.log(req.body);
+    console.log(req.headers);
+    const { title, token } = req.body;
     const newBoard = {
-        id: Date.now(), // Используй UUID или базу данных для уникальных идентификаторов
-        userId: req.user.id, // Используем ID из токена
-        title,
-        description
+        id: Date.now(),
+        userId: token,
+        title: title,
+        columns: {
+            "Need to do": {
+                "card": {}
+            },
+            "In progress": {
+                "card": {}
+            },
+            "Ready": {
+                "card": {}
+            }
+        }
     };
     boards.push(newBoard);
+    console.log(newBoard);
     res.status(201).json(newBoard);
 });
-
-// Получение всех досок текущего пользователя
-router.get('/', authMiddleware, (req, res) => {
-    const userBoards = boards.filter(board => board.userId === req.user.id);
+router.get('/get_all_user-board', (req, res) => {
+    const userBoards = boards.filter(board => board.userId === req.body.token);
     res.json(userBoards);
 });
 
-// Получение конкретной доски по ID
-router.get('/:id', authMiddleware, (req, res) => {
+
+
+
+
+
+
+
+
+
+router.get('/get_board/:id',
+    (req, res) => {
     const board = boards.find(
         board => board.id === req.params.id && board.userId === req.user.id
     );
@@ -34,8 +51,8 @@ router.get('/:id', authMiddleware, (req, res) => {
     res.json(board);
 });
 
-// Обновление доски
-router.put('/:id', authMiddleware, (req, res) => {
+router.put('/update_board/:id',
+    (req, res) => {
     const boardIndex = boards.findIndex(
         board => board.id === req.params.id && board.userId === req.user.id
     );
@@ -47,8 +64,8 @@ router.put('/:id', authMiddleware, (req, res) => {
     res.json(updatedBoard);
 });
 
-// Удаление доски
-router.delete('/:id', authMiddleware, (req, res) => {
+router.delete('/delete_board/:id',
+    (req, res) => {
     const boardIndex = boards.findIndex(
         board => board.id === req.params.id && board.userId === req.user.id
     );

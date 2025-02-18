@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from '../features/auth/model/authSlice';
-import boardReducer from '../features/boardManagement/model/boardManagementSlice';
+import boardReducer from '../widgets/Navbar/createBoardSlice.ts';
 import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
 
 // Создаём store

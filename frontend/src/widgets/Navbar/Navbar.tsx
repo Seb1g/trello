@@ -1,5 +1,8 @@
 import React, {useState} from "react";
 import DropdownNavBar from "../../shared/ui/DropdownNavBar/DropdownNavBar.tsx";
+import {RootState, useAppDispatch} from "../../app/store.ts";
+import {useSelector} from "react-redux";
+import {createBoards} from "./createBoardThunk.ts";
 
 interface NavProps {
   children: React.ReactNode;
@@ -8,6 +11,15 @@ interface NavProps {
 export const NavBar = ({children}: NavProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenCreateBoardModal, setIsOpenCreateBoardModal] = useState(false);
+  const [title, setNewTitle] = useState("");
+  const token = useSelector((state: RootState) => state.auth.token);
+  const dispatch = useAppDispatch();
+  const handleCreateBoard = () => {
+    if (token) {
+      dispatch(createBoards({title, token}));
+    }
+  };
+
   return (
     <nav
       style={{
@@ -203,8 +215,14 @@ export const NavBar = ({children}: NavProps) => {
                            gap: "20px",
                            padding: "20px",
                          }}>
-                      <input type="text" max={25} placeholder="Enter headline board"/>
-                      <button>Create board</button>
+                      <input type="text"
+                             max={25}
+                             placeholder="Enter headline board"
+                             onChange={e => {
+                               setNewTitle(e.target.value)
+                               console.log(e.target.value)
+                             }} />
+                      <button onClick={handleCreateBoard}>Create board</button>
                     </div>
                   </div>
                 )}

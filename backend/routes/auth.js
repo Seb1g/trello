@@ -83,8 +83,10 @@ router.post('/checkToken', async (req, res) => {
 });
 
 // Получение данных текущего пользователя (защищённый маршрут)
-const authMiddleware = require('../middleware/authMiddleware');
-router.get('/me', authMiddleware, (req, res) => {
+// const authMiddleware = require('../middleware/authMiddleware');
+router.get('/me',
+    // authMiddleware,
+    (req, res) => {
     // req.user устанавливается в middleware
     const user = users.find(user => user.id === req.user.id);
     if (!user) {

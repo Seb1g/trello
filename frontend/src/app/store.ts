@@ -1,26 +1,25 @@
-import { configureStore } from '@reduxjs/toolkit';
+import {configureStore} from '@reduxjs/toolkit';
 import authReducer from '../features/auth/model/authSlice';
-import boardReducer from '../widgets/Navbar/createBoardSlice.ts';
-import { useDispatch, useSelector, TypedUseSelectorHook } from 'react-redux';
+import {useDispatch, useSelector, TypedUseSelectorHook} from 'react-redux';
+import {createBoardSlice} from "../features/boardManagement/model/createBoardSlice.ts";
+import {getUserBoardsSlice} from "../features/boardManagement/model/getUserBoardsSlice.ts";
+import {getOneBoardSlice} from "../features/boardManagement/model/getOneBoardSlice.ts";
 
-// Создаём store
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    board: boardReducer,
+    createBoard: createBoardSlice.reducer,
+    getUserBoards: getUserBoardsSlice.reducer,
+    getOneBoard: getOneBoardSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // Можно включить, если возникают проблемы с несерийзуемыми объектами
+      serializableCheck: false,
     }),
 });
 
-// Типизация RootState (общий state всего приложения)
 export type RootState = ReturnType<typeof store.getState>;
-
-// Типизация AppDispatch (методы store.dispatch)
 export type AppDispatch = typeof store.dispatch;
 
-// Хуки с типизацией для удобства
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

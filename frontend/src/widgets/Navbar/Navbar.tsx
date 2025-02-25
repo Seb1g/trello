@@ -1,25 +1,8 @@
-import React, {useState} from "react";
 import DropdownNavBar from "../../shared/ui/DropdownNavBar/DropdownNavBar.tsx";
-import {RootState, useAppDispatch} from "../../app/store.ts";
-import {useSelector} from "react-redux";
-import {createBoards} from "./createBoardThunk.ts";
+import {BoardCreator} from "../../features/boardManagement/ui/BoardCreator.tsx";
+import {UserProfile} from "../../entities/user/ui/UserProfile.tsx";
 
-interface NavProps {
-  children: React.ReactNode;
-}
-
-export const NavBar = ({children}: NavProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [isOpenCreateBoardModal, setIsOpenCreateBoardModal] = useState(false);
-  const [title, setNewTitle] = useState("");
-  const token = useSelector((state: RootState) => state.auth.token);
-  const dispatch = useAppDispatch();
-  const handleCreateBoard = () => {
-    if (token) {
-      dispatch(createBoards({title, token}));
-    }
-  };
-
+export const NavBar = () => {
   return (
     <nav
       style={{
@@ -49,22 +32,24 @@ export const NavBar = ({children}: NavProps) => {
             </a>
           </div>
           <div className="logoContainer">
-            <svg xmlns="http://www.w3.org/2000/svg" width="136" viewBox="0 0 293.29 64.56">
-              <defs>
-                <linearGradient id="A" x1="31.52" y1="64.56" x2="31.52" y2="1.51" gradientUnits="userSpaceOnUse">
-                  <stop offset=".18" stopColor="#0052cc"/>
-                  <stop offset="1" stopColor="#2684ff"/>
-                </linearGradient>
-              </defs>
-              <g fillRule="evenodd">
-                <path
-                  d="M130.14 4.58v7.57H111V62.4h-7.92V12.14H86.84V4.58zM134 18.4h7.4v7.74c2.55-5.2 7-8.9 15.58-8.36v7.4c-9.68-1-15.58 1.94-15.58 11.26v26H134zm49.64 44.88c-16.46 0-23.67-9.5-23.67-23 0-13.3 7.4-22.8 20.77-22.8 13.55 0 19 9.42 19 22.8v3.43h-32.1c1.06 7.48 5.9 12.32 16.28 12.32a39 39 0 0 0 13.38-2.38v7c-3.6 1.93-9.16 2.63-13.65 2.63zm-16.1-26h24.55c-.44-8.18-4.14-12.85-11.7-12.85-8-.04-12.06 5.15-12.85 12.8zm52.98 25.38c-7.22 0-11.8-3.43-11.8-11.53V0h7.57v50.25c0 4 2.64 5.37 5.9 5.37a19.17 19.17 0 0 0 2.2-.09v6.77a16.11 16.11 0 0 1-3.88.35zm22.96 0c-7.22 0-11.8-3.43-11.8-11.53V0h7.57v50.25c0 4 2.64 5.37 5.9 5.37a19.17 19.17 0 0 0 2.2-.09v6.77a16.11 16.11 0 0 1-3.88.35zm8.1-22.35c0-13.2 7.74-22.8 20.94-22.8s20.77 9.6 20.77 22.8-7.66 23-20.77 23-20.94-9.8-20.94-23zm7.4 0c0 8.36 4.14 15.93 13.55 15.93s13.38-7.57 13.38-15.93-4-15.75-13.37-15.75S259 31.94 259 40.3z"
-                  fill="#253858"/>
-                <path
-                  d="M55.16 1.5H7.88A7.88 7.88 0 0 0 0 9.39v47.28a7.88 7.88 0 0 0 7.88 7.88h47.28A7.88 7.88 0 0 0 63 56.67V9.4a7.88 7.88 0 0 0-7.84-7.88zM27.42 49.26A3.78 3.78 0 0 1 23.64 53H12a3.78 3.78 0 0 1-3.8-3.74V13.5A3.78 3.78 0 0 1 12 9.71h11.64a3.78 3.78 0 0 1 3.78 3.78zM54.85 33.5a3.78 3.78 0 0 1-3.78 3.78H39.4a3.78 3.78 0 0 1-3.78-3.78v-20a3.78 3.78 0 0 1 3.78-3.79h11.67a3.78 3.78 0 0 1 3.78 3.78z"
-                  fill="url(#A)"/>
-              </g>
-            </svg>
+            <a href="/dashboard">
+              <svg xmlns="http://www.w3.org/2000/svg" width="136" viewBox="0 0 293.29 64.56">
+                <defs>
+                  <linearGradient id="A" x1="31.52" y1="64.56" x2="31.52" y2="1.51" gradientUnits="userSpaceOnUse">
+                    <stop offset=".18" stopColor="#0052cc"/>
+                    <stop offset="1" stopColor="#2684ff"/>
+                  </linearGradient>
+                </defs>
+                <g fillRule="evenodd">
+                  <path
+                    d="M130.14 4.58v7.57H111V62.4h-7.92V12.14H86.84V4.58zM134 18.4h7.4v7.74c2.55-5.2 7-8.9 15.58-8.36v7.4c-9.68-1-15.58 1.94-15.58 11.26v26H134zm49.64 44.88c-16.46 0-23.67-9.5-23.67-23 0-13.3 7.4-22.8 20.77-22.8 13.55 0 19 9.42 19 22.8v3.43h-32.1c1.06 7.48 5.9 12.32 16.28 12.32a39 39 0 0 0 13.38-2.38v7c-3.6 1.93-9.16 2.63-13.65 2.63zm-16.1-26h24.55c-.44-8.18-4.14-12.85-11.7-12.85-8-.04-12.06 5.15-12.85 12.8zm52.98 25.38c-7.22 0-11.8-3.43-11.8-11.53V0h7.57v50.25c0 4 2.64 5.37 5.9 5.37a19.17 19.17 0 0 0 2.2-.09v6.77a16.11 16.11 0 0 1-3.88.35zm22.96 0c-7.22 0-11.8-3.43-11.8-11.53V0h7.57v50.25c0 4 2.64 5.37 5.9 5.37a19.17 19.17 0 0 0 2.2-.09v6.77a16.11 16.11 0 0 1-3.88.35zm8.1-22.35c0-13.2 7.74-22.8 20.94-22.8s20.77 9.6 20.77 22.8-7.66 23-20.77 23-20.94-9.8-20.94-23zm7.4 0c0 8.36 4.14 15.93 13.55 15.93s13.38-7.57 13.38-15.93-4-15.75-13.37-15.75S259 31.94 259 40.3z"
+                    fill="#253858"/>
+                  <path
+                    d="M55.16 1.5H7.88A7.88 7.88 0 0 0 0 9.39v47.28a7.88 7.88 0 0 0 7.88 7.88h47.28A7.88 7.88 0 0 0 63 56.67V9.4a7.88 7.88 0 0 0-7.84-7.88zM27.42 49.26A3.78 3.78 0 0 1 23.64 53H12a3.78 3.78 0 0 1-3.8-3.74V13.5A3.78 3.78 0 0 1 12 9.71h11.64a3.78 3.78 0 0 1 3.78 3.78zM54.85 33.5a3.78 3.78 0 0 1-3.78 3.78H39.4a3.78 3.78 0 0 1-3.78-3.78v-20a3.78 3.78 0 0 1 3.78-3.79h11.67a3.78 3.78 0 0 1 3.78 3.78z"
+                    fill="url(#A)"/>
+                </g>
+              </svg>
+            </a>
           </div>
         </div>
         <div className="recentBoards"
@@ -89,164 +74,8 @@ export const NavBar = ({children}: NavProps) => {
                justifyContent: 'center',
                alignItems: "center",
              }}>
-          <div style={{position: "relative", flexDirection: "row",}}>
-            <button
-              style={{
-                backgroundColor: "#2563eb",
-                color: "white",
-                padding: "0.5rem 1rem",
-                borderRadius: "0.2rem",
-                cursor: "pointer",
-                height: "32px",
-                fontWeight: "bold",
-              }}
-              onClick={() => setIsOpen(!isOpen)}
-              onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#1d4ed8")}
-              onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#2563eb")}
-            >
-              Create board
-            </button>
-            {isOpen && (
-              <div
-                style={{
-                  position: "absolute",
-                  marginTop: "0.5rem",
-                  width: "280px",
-                  backgroundColor: "white",
-                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                  borderRadius: "0.5rem",
-                  zIndex: 10,
-                }}
-              >
-                <button
-                  className="createBoardButton"
-                  onClick={() => setIsOpenCreateBoardModal(!isOpenCreateBoardModal)}
-                  style={{
-                    width: "280px",
-                    height: "88px",
-                    textAlign: "left",
-                    padding: "6px 12px",
-                    cursor: "pointer",
-                    position: "relative",
-                    border: "none",
-                    borderRadius: "0.5rem",
-                    backgroundColor: "white",
-                    zIndex: 1,
-                  }}
-                >
-                  <h1>Create board</h1>
-                  <div>
-                    A board is a collection of cards organized into lists. Use it to manage a project, track, or
-                    organize anything.
-                  </div>
-                </button>
-
-                {isOpenCreateBoardModal && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: 0,
-                      left: 0,
-                      width: "280px",
-                      backgroundColor: "white",
-                      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                      borderRadius: "0.5rem",
-                      zIndex: 20,
-                      padding: "8px",
-                    }}
-                  >
-                    <div
-                      className="buttonContainer"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <button
-                        type="button"
-                        onClick={() => setIsOpenCreateBoardModal(false)}
-                        style={{
-                          borderRadius: "0.2rem",
-                          border: "none",
-                          height: "32px",
-                          width: "32px",
-                          backgroundColor: "white",
-                          cursor: "pointer",
-                        }}
-                        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#e0e1dd")}
-                        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#ffffff")}
-                      >
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                             xmlns="http://www.w3.org/2000/svg">
-                          <path
-                            d="M7.29289 11.2929L14.364 4.22185C14.7545 3.83132 15.3876 3.83132 15.7782 4.22185C16.1687 4.61237 16.1687 5.24554 15.7782 5.63606L9.41421 12L15.7782 18.364C16.1687 18.7545 16.1687 19.3877 15.7782 19.7782C15.3877 20.1687 14.7545 20.1687 14.364 19.7782L7.29289 12.7071C6.90237 12.3166 6.90237 11.6834 7.29289 11.2929Z"
-                            fill="currentColor"
-                          ></path>
-                        </svg>
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setIsOpenCreateBoardModal(false);
-                          setIsOpen(false);
-                        }}
-                        style={{
-                          borderRadius: "0.2rem",
-                          border: "none",
-                          height: "32px",
-                          width: "32px",
-                          backgroundColor: "white",
-                          cursor: "pointer",
-                        }}
-                        onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#e0e1dd")}
-                        onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#ffffff")}
-                      >
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path fillRule="evenodd" clipRule="evenodd"
-                                d="M10.5858 12L5.29289 6.70711C4.90237 6.31658 4.90237 5.68342 5.29289 5.29289C5.68342 4.90237 6.31658 4.90237 6.70711 5.29289L12 10.5858L17.2929 5.29289C17.6834 4.90237 18.3166 4.90237 18.7071 5.29289C19.0976 5.68342 19.0976 6.31658 18.7071 6.70711L13.4142 12L18.7071 17.2929C19.0976 17.6834 19.0976 18.3166 18.7071 18.7071C18.3166 19.0976 17.6834 19.0976 17.2929 18.7071L12 13.4142L6.70711 18.7071C6.31658 19.0976 5.68342 19.0976 5.29289 18.7071C4.90237 18.3166 4.90237 17.6834 5.29289 17.2929L10.5858 12Z"
-                                fill="currentColor"></path>
-                        </svg>
-                      </button>
-                    </div>
-                    <div className="createButtonContainer"
-                         style={{
-                           display: "flex",
-                           flexDirection: "column",
-                           gap: "20px",
-                           padding: "20px",
-                         }}>
-                      <input type="text"
-                             max={25}
-                             placeholder="Enter headline board"
-                             onChange={e => {
-                               setNewTitle(e.target.value)
-                               console.log(e.target.value)
-                             }} />
-                      <button onClick={handleCreateBoard}>Create board</button>
-                    </div>
-                  </div>
-                )}
-                <button className="createBoardWithTemplatesButton"
-                        style={{
-                          width: "280px",
-                          height: "56px",
-                          textAlign: "left",
-                          padding: "6px 12px",
-                          cursor: "pointer",
-                          border: "none",
-                          borderRadius: "0.5rem",
-                          backgroundColor: "white",
-                        }}>
-                  <h1>Starts with templates</h1>
-                  <div>
-                    Get started faster with a board template.
-                  </div>
-                </button>
-              </div>
-            )}
-          </div>
+          <BoardCreator/>
         </div>
-
       </div>
       <div className="userAccount"
            style={{
@@ -254,7 +83,7 @@ export const NavBar = ({children}: NavProps) => {
              justifyContent: 'center',
              alignItems: "center",
            }}>
-        {children}
+        <UserProfile />
       </div>
     </nav>
   )

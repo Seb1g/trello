@@ -36,7 +36,8 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({
         user: { id: newUser.id, name: newUser.name, email: newUser.email },
-        token
+        token,
+        isLoggedIn: true
     });
 });
 
@@ -59,6 +60,7 @@ router.post('/login', async (req, res) => {
     res.json({
         user: { id: user.id, name: user.name, email: user.email },
         token: user.token,
+        isLoggedIn: true
     });
 });
 
@@ -82,17 +84,5 @@ router.post('/checkToken', async (req, res) => {
     });
 });
 
-// Получение данных текущего пользователя (защищённый маршрут)
-// const authMiddleware = require('../middleware/authMiddleware');
-router.get('/me',
-    // authMiddleware,
-    (req, res) => {
-    // req.user устанавливается в middleware
-    const user = users.find(user => user.id === req.user.id);
-    if (!user) {
-        return res.status(404).json({ message: 'Пользователь не найден' });
-    }
-    res.json({ id: user.id, name: user.name, email: user.email });
-});
 
 module.exports = router;

@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../app/store';
-import {selectAuth, clearError, logout} from '../model/authSlice.ts';
+import {selectAuth, clearError} from '../model/authSlice.ts';
 import {useNavigate} from 'react-router-dom';
 import {register} from "../model/authThunks.ts"
 
@@ -14,7 +14,6 @@ const Register: React.FC = () => {
   const [password, setPassword] = useState('');
 
   const handleRedirectToLogin = () => {
-    dispatch(logout());
     navigate('/login');
   };
 

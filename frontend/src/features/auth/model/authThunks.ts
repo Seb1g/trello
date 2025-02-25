@@ -1,12 +1,11 @@
 import {
   loginApi,
   registerApi,
-  getMeApi,
   LoginCredentials,
   RegisterData,
   checkToken,
   checkCredentials
-} from '../../../shared/api/authApi';
+} from '../../../shared/config/authApi';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {User} from './authSlice';
@@ -21,7 +20,7 @@ const handleApiError = (error: unknown): string => {
 
 // Thunk для логина
 export const login = createAsyncThunk<
-  { user: User; token: string },
+  { user: User; token: string; isLoggedIn: boolean },
   LoginCredentials,
   { rejectValue: string }
 >('auth/login', async (credentials, {rejectWithValue}) => {
@@ -49,7 +48,7 @@ export const check = createAsyncThunk<
 
 // Thunk для регистрации
 export const register = createAsyncThunk<
-  { user: User; token: string },
+  { user: User; token: string; isLoggedIn: boolean; },
   RegisterData,
   { rejectValue: string }
 >('auth/register', async (data, {rejectWithValue}) => {
@@ -60,20 +59,3 @@ export const register = createAsyncThunk<
     return rejectWithValue(handleApiError(error));
   }
 });
-
-// Thunk для получения данных текущего пользователя
-export const getMe = createAsyncThunk<
-  User,
-  string,
-  { rejectValue: string }
->(
-  'auth/getMe',
-  async (token, {rejectWithValue}) => {
-    try {
-      const response = await getMeApi(token);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(handleApiError(error));
-    }
-  }
-);

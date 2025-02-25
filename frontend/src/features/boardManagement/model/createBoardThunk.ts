@@ -1,0 +1,29 @@
+import {createBoardApi} from '../../../shared/config/boardsApi.ts';
+import {createAsyncThunk} from '@reduxjs/toolkit';
+import axios from 'axios';
+import {Board} from "./createBoardSlice.ts";
+
+interface createBoardData {
+  title: string;
+  token: string;
+}
+
+const handleApiError = (error: unknown): string => {
+  if (axios.isAxiosError(error)) {
+    return error.response?.data?.message || 'Ошибка запроса';
+  }
+  return 'Неизвестная ошибка';
+};
+
+export const createBoards = createAsyncThunk<
+  Board,
+  createBoardData,
+  { rejectValue: string }
+>('board/create_board', async (credentials, {rejectWithValue}) => {
+  try {
+    const response = await createBoardApi(credentials);
+    return response.data;
+  } catch (error) {
+    return rejectWithValue(handleApiError(error));
+  }
+});

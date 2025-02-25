@@ -1,4 +1,4 @@
-import apiClient from './createApi';
+import apiClient from '../api/createApi';
 
 export interface LoginCredentials {
   email: string;

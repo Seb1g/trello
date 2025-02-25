@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../../app/store';
-import {check, getMe, login, register} from './authThunks';
+import {check, login, register} from './authThunks';
 
 export interface User {
   id: number;
@@ -33,6 +33,7 @@ const authSlice = createSlice({
       state.user = null;
       state.token = null;
       state.error = null;
+      state.isLoggedIn = false;
     },
     clearError(state) {
       state.error = null;
@@ -43,10 +44,11 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(login.fulfilled, (state, action: PayloadAction<{ user: User; token: string }>) => {
+    builder.addCase(login.fulfilled, (state, action: PayloadAction<{ user: User; token: string; isLoggedIn: boolean; }>) => {
       state.loading = false;
       state.user = action.payload.user;
       state.token = action.payload.token;
+      state.isLoggedIn = action.payload.isLoggedIn;
     });
     builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
@@ -71,27 +73,15 @@ const authSlice = createSlice({
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(register.fulfilled, (state, action: PayloadAction<{ user: User; token: string }>) => {
+    builder.addCase(register.fulfilled, (state, action: PayloadAction<{ user: User; token: string; isLoggedIn: boolean; }>) => {
       state.loading = false;
       state.user = action.payload.user;
       state.token = action.payload.token;
+      state.isLoggedIn = action.payload.isLoggedIn;
     });
     builder.addCase(register.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload || 'Ошибка регистрации';
-    });
-
-    builder.addCase(getMe.pending, (state) => {
-      state.loading = true;
-      state.error = null;
-    });
-    builder.addCase(getMe.fulfilled, (state, action: PayloadAction<User>) => {
-      state.loading = false;
-      state.user = action.payload;
-    });
-    builder.addCase(getMe.rejected, (state, action) => {
-      state.loading = false;
-      state.error = action.payload || 'Ошибка получения данных';
     });
   },
 });

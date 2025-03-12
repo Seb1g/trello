@@ -1,21 +1,32 @@
-// const jwt = require('jsonwebtoken');
-//
-// module.exports = (req, res, next) => {
-//     // Ожидается, что заголовок Authorization имеет формат: Bearer <token>
-//     const authHeader = req.header('Authorization');
-//     if (!authHeader) {
-//         return res.status(401).json({ message: 'Нет токена, доступ запрещен' });
-//     }
-//
-//     const token = authHeader.split(' ')[1];
-//     if (!token) {
-//         return res.status(401).json({ message: 'Нет токена, доступ запрещен' });
-//     }
-//
-//     try {
-//         req.user = jwt.verify(token, process.env.JWT_SECRET); // Добавляем данные пользователя в запрос
-//         next();
-//     } catch (error) {
-//         res.status(401).json({ message: 'Токен недействителен' });
-//     }
-// };
+const ApiError = require('../exceptions/apiError');
+const tokenService = require('../service/tokenService');
+
+module.exports = function authMiddleware(req, res, next) {
+    try {
+        if (typeof next !== 'function') {
+            console.error("next is not a function. Check how the middleware is applied.");
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+
+        const authorizationHeader = req.headers.authorization;
+        if (!authorizationHeader) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        const accessToken = authorizationHeader.split(' ')[1];
+        if (!accessToken) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        const userData = tokenService.validateAccessToken(accessToken);
+        if (!userData) {
+            return res.status(401).json({ message: 'Unauthorized' });
+        }
+
+        req.user = userData;
+        next();
+    } catch (e) {
+        console.error("Auth Middleware Error:", e);
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+};

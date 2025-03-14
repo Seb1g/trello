@@ -1,9 +1,13 @@
 const cookieParser = require('cookie-parser');
-const router = require('./router/index')
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 const errorMiddleware = require('./middleware/errorMiddleware');
+const authRouter = require('./router/authRouter');
+const boardRouter = require('./router/boardRouter');
+const mailRouter = require('./router/mailRouter');
+const columnRouter = require('./router/columnRouter');
+const cardRouter = require('./router/cardRouter');
 
 const port = process.env.PORT || 3000
 const app = express();
@@ -15,7 +19,11 @@ app.use(cors({
   origin: process.env.CLIENT_URL
 }));
 
-app.use('/api', router);
+app.use('/auth', authRouter);
+app.use('/mail', mailRouter);
+app.use('/board', boardRouter);
+app.use('/column', columnRouter);
+app.use('/card', cardRouter);
 app.use(errorMiddleware);
 
 const start = async () => {

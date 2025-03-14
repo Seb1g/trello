@@ -1,27 +1,29 @@
+const cookieParser = require('cookie-parser');
+const router = require('./router/index')
 const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
+const errorMiddleware = require('./middleware/errorMiddleware');
 
-const createItems = require('./routes/board/createItems');
-const deleteItems = require('./routes/board/delete');
-const moveItems = require('./routes/board/moveItems');
-
+const port = process.env.PORT || 3000
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// Мидлвар для обработки JSON и CORS
-app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors({
+  credentials: true,
+  origin: process.env.CLIENT_URL
+}));
 
-// Маршруты API
-app.use('/create_items', createItems);
-app.use('/delete_items', deleteItems);
-app.use('/move_items', moveItems);
+app.use('/api', router);
+app.use(errorMiddleware);
 
-app.get('/', (req, res) => {
-    res.send('Добро пожаловать в API Trello Clone!');
-});
+const start = async () => {
+    try {
+        app.listen(port, () => console.log(`Server worked on ${port} port`))
+    } catch (e) {
+        console.log(e);
+    }
+};
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+start().then(r => console.log(r))

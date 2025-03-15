@@ -1,47 +1,46 @@
 import apiClient from '../api/createApi';
 
-interface GetUserBoards {
-  token: string;
+interface GetAllUserBoards {
+  userId: number;
 }
 
-interface GetUserBoard {
-  id: string;
-  boardId: number;
-  token: string;
+interface GetOneUserBoard {
+  boardId: string;
+  userId: number;
 }
 
-interface CreateBoardData {
+interface CreateUserBoardData {
   title: string;
-  token: string;
+  userId: number;
 }
 
-export const getBoardsApi = (data: GetUserBoards) => {
-  return apiClient.post('/boards/get_all_user-board', data, {
-    headers: {Authorization: `Bearer ${data.token}`},
-  });
+interface DeleteUserBoardData {
+  boardId: string;
+  userId: number;
+}
+
+interface RenameUserBoardData {
+  boardId: string;
+  userId: number;
+  newName: string;
+}
+
+export const getAllUserBoardsApi = (data: GetAllUserBoards) => {
+  return apiClient.post('/board/get_all_user_boards', data);
 };
 
-export const getBoardApi = (data: GetUserBoard) => {
-  return apiClient.post('/boards/get_board', data, {
-    headers: {Authorization: `Bearer ${data.token}`},
-  });
+export const getOneUserBoardApi = (data: GetOneUserBoard) => {
+  return apiClient.post('/board/get_one_user_board', data);
 };
 
-export const createBoardApi = (data: CreateBoardData) => {
-  return apiClient.post('/boards/create_board', data, {
-    headers: {Authorization: `Bearer ${data.token}`},
-  });
+export const createUserBoardApi = (data: CreateUserBoardData) => {
+  return apiClient.post('/board/create_board', data);
 };
 
+export const deleteUserBoardApi = (data: DeleteUserBoardData) => {
+  return apiClient.post('/board/delete_board', data);
+};
 
-// export const updateBoardApi = (boardId: number, data: Partial<string>, token: string) => {
-//   return apiClient.put(`/board/board/${boardId}`, data, {
-//     headers: {Authorization: `Bearer ${token}`},
-//   });
-// };
-//
-// export const deleteBoardApi = (boardId: number, token: string) => {
-//   return apiClient.delete(`/board/board/${boardId}`, {
-//     headers: {Authorization: `Bearer ${token}`},
-//   });
-// };
+export const renameUserBoardApi = (data: RenameUserBoardData) => {
+  return apiClient.post('/board/rename_board', data);
+};

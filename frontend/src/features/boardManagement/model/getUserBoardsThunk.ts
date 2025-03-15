@@ -1,10 +1,10 @@
-import {getBoardsApi} from '../../../shared/config/boardsApi.ts';
+import {getAllUserBoardsApi} from '../../../shared/config/boardsApi.ts';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
 import {Board} from "./createBoardSlice.ts";
 
 interface GetUserBoardsThunk {
-  token: string;
+  userId: number;
 }
 
 const handleApiError = (error: unknown): string => {
@@ -20,7 +20,7 @@ export const getUserBoards = createAsyncThunk<
   { rejectValue: string }
 >('board/get_all_user-board', async (credentials, {rejectWithValue}) => {
   try {
-    const response = await getBoardsApi(credentials);
+    const response = await getAllUserBoardsApi(credentials);
     return response.data;
   } catch (error) {
     return rejectWithValue(handleApiError(error));

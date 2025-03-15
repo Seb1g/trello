@@ -1,20 +1,19 @@
-import {logout} from "../../../features/auth/model/authSlice.ts";
+// import logout from "../../../features/auth/model/authSlice.ts";
 import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+// import {useNavigate} from "react-router-dom";
 import {Avatar} from "./Avatar.tsx";
 import {UserSelector} from "../model/userSelector.ts";
 
 export const UserProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
-  const {dispatch, user} = UserSelector()
+  // const navigate = useNavigate();
+  const { user} = UserSelector()
 
-  const handleLogout = () => {
-    dispatch(logout());
-    localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    navigate('/login');
-  };
+  // const handleLogout = () => {
+  //   dispatch(logout()).then(() => {
+  //     navigate('/login')
+  //   });
+  // };
 
   return (
     <div style={{position: "relative", display: "inline-block"}}>
@@ -66,7 +65,6 @@ export const UserProfile = () => {
                    flexDirection: "column",
                    gap: "0.2rem",
                  }}>
-              <p>{user.user === null ? "" : user.user.name}</p>
               <p>{user.user === null ? "" : user.user.email}</p>
             </div>
           </div>
@@ -95,7 +93,8 @@ export const UserProfile = () => {
             </button>
           </div>
           <div className="quitButton">
-            <button type="button" onClick={handleLogout}
+            <button type="button"
+                    // onClick={handleLogout}
                     style={{
                       padding: "0.5rem 1rem",
                       borderRadius: "0.5rem",

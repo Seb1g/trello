@@ -1,61 +1,61 @@
-import {
-  loginApi,
-  registerApi,
-  LoginCredentials,
-  RegisterData,
-  checkToken,
-  checkCredentials
-} from '../../../shared/config/authApi';
-import {createAsyncThunk} from '@reduxjs/toolkit';
-import axios from 'axios';
-import {User} from './authSlice';
+import {createAsyncThunk} from "@reduxjs/toolkit";
+import axios, {AxiosError} from "axios";
+import {loginApi, logoutApi, registerApi} from "../../../shared/config/authApi.ts";
+import {AuthResponse, IUser} from "../../../shared/api/createApi.ts";
 
-// Функция для обработки ошибок, получаемых от axios
-const handleApiError = (error: unknown): string => {
-  if (axios.isAxiosError(error)) {
-    return error.response?.data?.message || 'Ошибка запроса';
+export const login = createAsyncThunk(
+  "auth/login",
+  async ({email, password}: { email: string; password: string }, {rejectWithValue}) => {
+    try {
+      const response = await loginApi({email, password});
+      localStorage.setItem("token", response.data.accessToken);
+      return response.data;
+    } catch (e: unknown) {
+      if (e instanceof AxiosError) {
+        return rejectWithValue(e.response?.data?.message);
+      }
+      return rejectWithValue("Unexpected error");
+    }
   }
-  return 'Неизвестная ошибка';
-};
+);
 
-// Thunk для логина
-export const login = createAsyncThunk<
-  { user: User; token: string; isLoggedIn: boolean },
-  LoginCredentials,
-  { rejectValue: string }
->('auth/login', async (credentials, {rejectWithValue}) => {
+export const registration = createAsyncThunk(
+  "auth/registration",
+  async ({email, password}: { email: string; password: string }, {rejectWithValue}) => {
+    try {
+      const response = await registerApi({email, password});
+      return response.data;
+    } catch (e: unknown) {
+      if (e instanceof AxiosError) {
+        return rejectWithValue(e.response?.data?.message);
+      }
+      return rejectWithValue("Unexpected error");
+    }
+  }
+);
+
+export const logout = createAsyncThunk("auth/logout", async (_, {rejectWithValue}) => {
   try {
-    const response = await loginApi(credentials);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(handleApiError(error));
+    await logoutApi();
+    localStorage.removeItem("token");
+    return {} as IUser;
+  } catch (e: unknown) {
+    if (e instanceof AxiosError) {
+      return rejectWithValue(e.response?.data?.message);
+    }
+    return rejectWithValue("Unexpected error");
   }
 });
 
-// Thunk для проверки токена
-export const check = createAsyncThunk<
-  { user: User, isLoggedIn: boolean },
-  checkCredentials,
-  { rejectValue: string }
->('auth/checkToken', async (checkCredentials, {rejectWithValue}) => {
+export const checkAuth = createAsyncThunk("auth/checkAuth", async (_, {rejectWithValue}) => {
   try {
-    const response = await checkToken(checkCredentials);
+    const response = await axios.get<AuthResponse>(`http://localhost:5000/auth/refresh`, {withCredentials: true});
+    localStorage.setItem("token", response.data.accessToken);
     return response.data;
-  } catch (error) {
-    return rejectWithValue(handleApiError(error));
-  }
-});
-
-// Thunk для регистрации
-export const register = createAsyncThunk<
-  { user: User; token: string; isLoggedIn: boolean; },
-  RegisterData,
-  { rejectValue: string }
->('auth/register', async (data, {rejectWithValue}) => {
-  try {
-    const response = await registerApi(data);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(handleApiError(error));
+  } catch (e: unknown) {
+    if (e instanceof AxiosError) {
+      return rejectWithValue(e.response?.data?.message);
+    }
+    return rejectWithValue("Unexpected error");
   }
 });

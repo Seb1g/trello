@@ -1,19 +1,18 @@
 import React, {useState} from 'react';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
-import {selectAuth, clearError, logout} from '../model/authSlice.ts';
+import {useAppDispatch} from '../../../app/store';
+// import {selectAuth, clearError, logout} from '../model/authSlice.ts';
 import {useNavigate} from 'react-router-dom';
 import {login} from "../model/authThunks.ts"
 
 const Login: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const {loading, error} = useAppSelector(selectAuth);
+  // const {loading, error} = useAppSelector(selectAuth);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleRedirectToRegister = () => {
-    dispatch(logout());
     navigate('/register');
   };
 
@@ -27,12 +26,12 @@ const Login: React.FC = () => {
       <div
         style={{display: 'flex', flexDirection: 'column', gap: "15px", width: "200px", alignItems: "center"}}>
         <h2>Вход</h2>
-        {error && (
-          <p style={{color: 'red'}}>
-            {error}
-            <button onClick={() => dispatch(clearError())}>×</button>
-          </p>
-        )}
+        {/*{error && (*/}
+        {/*  <p style={{color: 'red'}}>*/}
+        {/*    {error}*/}
+        {/*    <button onClick={() => dispatch(clearError())}>×</button>*/}
+        {/*  </p>*/}
+        {/*)}*/}
         <input
           type="email"
           placeholder="Email"
@@ -45,8 +44,11 @@ const Login: React.FC = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={handleLogin} disabled={loading}>
-          {loading ? 'Вход...' : 'Войти'}
+        <button onClick={handleLogin}
+                // disabled={loading}
+        >
+          {/*{loading ? 'Вход...' : 'Войти'}*/}
+          Login
         </button>
       </div>
       <div>

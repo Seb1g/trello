@@ -1,6 +1,7 @@
 import {configureStore} from '@reduxjs/toolkit';
-import authReducer from '../features/auth/model/authSlice';
 import {useDispatch, useSelector, TypedUseSelectorHook} from 'react-redux';
+
+import authReducer from '../features/auth/model/authSlice.ts';
 import {createBoardSlice} from "../features/boardManagement/model/createBoardSlice.ts";
 import {getUserBoardsSlice} from "../features/boardManagement/model/getUserBoardsSlice.ts";
 import {getOneBoardSlice} from "../features/boardManagement/model/getOneBoardSlice.ts";

@@ -1,13 +1,12 @@
 import React, {useState} from 'react';
-import {useAppDispatch, useAppSelector} from '../../../app/store';
-import {selectAuth, clearError} from '../model/authSlice.ts';
+import {useAppDispatch} from '../../../app/store';
 import {useNavigate} from 'react-router-dom';
-import {register} from "../model/authThunks.ts"
+import {registration} from "../model/authThunks.ts"
 
 const Register: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const {loading, error} = useAppSelector(selectAuth);
+  // const {loading, error} = useAppSelector(selectAuth);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,7 +17,7 @@ const Register: React.FC = () => {
   };
 
   const handleRegister = () => {
-    dispatch(register({name, email, password}));
+    dispatch(registration({email, password}));
   };
 
   return (
@@ -27,12 +26,12 @@ const Register: React.FC = () => {
       <div
         style={{display: 'flex', flexDirection: 'column', gap: "15px", width: "200px", alignItems: "center"}}>
         <h2>Регистрация</h2>
-        {error && (
-          <p style={{color: 'red'}}>
-            {error}
-            <button onClick={() => dispatch(clearError())}>×</button>
-          </p>
-        )}
+        {/*{error && (*/}
+        {/*  <p style={{color: 'red'}}>*/}
+        {/*    {error}*/}
+        {/*    <button onClick={() => dispatch(clearError())}>×</button>*/}
+        {/*  </p>*/}
+        {/*)}*/}
         <input
           type="text"
           placeholder="Имя"
@@ -51,8 +50,11 @@ const Register: React.FC = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button onClick={handleRegister} disabled={loading}>
-          {loading ? 'Регистрация...' : 'Зарегистрироваться'}
+        <button onClick={handleRegister}
+                // disabled={loading}
+        >
+          {/*{loading ? 'Регистрация...' : 'Зарегистрироваться'}*/}
+          Register
         </button>
       </div>
       <div>

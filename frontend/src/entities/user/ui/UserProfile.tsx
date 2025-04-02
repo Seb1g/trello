@@ -1,19 +1,22 @@
-// import logout from "../../../features/auth/model/authSlice.ts";
+import {logout} from "../../../features/auth/model/authThunks.ts";
 import {useState} from "react";
-// import {useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {Avatar} from "./Avatar.tsx";
 import {UserSelector} from "../model/userSelector.ts";
+import {useAppDispatch} from "../../../app/store.ts";
 
 export const UserProfile = () => {
   const [isOpen, setIsOpen] = useState(false);
-  // const navigate = useNavigate();
-  const { user} = UserSelector()
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const {user} = UserSelector()
 
-  // const handleLogout = () => {
-  //   dispatch(logout()).then(() => {
-  //     navigate('/login')
-  //   });
-  // };
+  const handleLogout = () => {
+    dispatch(logout()).then(() => {
+      navigate('/login')
+    });
+  };
+
 
   return (
     <div style={{position: "relative", display: "inline-block"}}>
@@ -58,7 +61,7 @@ export const UserProfile = () => {
                  gap: "0.7rem",
                  marginTop: "0.5rem",
                }}>
-            <Avatar />
+            <Avatar/>
             <div className="userData-info"
                  style={{
                    display: "flex",
@@ -94,7 +97,7 @@ export const UserProfile = () => {
           </div>
           <div className="quitButton">
             <button type="button"
-                    // onClick={handleLogout}
+                    onClick={handleLogout}
                     style={{
                       padding: "0.5rem 1rem",
                       borderRadius: "0.5rem",

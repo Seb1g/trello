@@ -1,25 +1,23 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {getOneBoard} from "./getOneBoardThunk.ts";
 
-interface Card {
-  id: number;
-  content: string;
-}
-
 interface Cards {
-  data: Card[];
+  id: string;
+  content: string;
+  position: number;
 }
 
-interface Column {
+interface Columns {
+  id: string;
   title: string;
-  cards: Cards;
+  position: number;
+  cards: Cards[];
 }
 
-export interface Board {
-  columns: Column[];
-  id: number;
-  userId: string;
+interface Board {
   title: string;
+  id: string;
+  columns: Columns[];
 }
 
 export interface BoardsState {
@@ -30,8 +28,7 @@ export interface BoardsState {
 
 const initialState: BoardsState = {
   board: {
-    id: 0,
-    userId: "",
+    id: "",
     title: "",
     columns: [],
   },

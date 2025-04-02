@@ -14,7 +14,7 @@ export const Avatar = () => {
           justifyContent: "center",
           backgroundColor: "orange",
           borderRadius: "2rem",
-        }}>{user.user === null ? "" : user.user.name[0]}</div>
+        }}>{user.user === null ? "" : user.user.email[0]}</div>
     </div>
   )
 }

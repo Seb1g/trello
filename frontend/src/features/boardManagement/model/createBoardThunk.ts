@@ -1,9 +1,14 @@
 import {createUserBoardApi} from '../../../shared/config/boardsApi.ts';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {Board} from "./createBoardSlice.ts";
 
 interface createBoardData {
+  title: string;
+  userId: number;
+}
+
+interface Board {
+  id: string;
   title: string;
   userId: number;
 }

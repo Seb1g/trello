@@ -1,29 +1,8 @@
-import React, {useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from '../../app/store';
+import React from 'react';
 import {NavBar} from "../../widgets/Navbar/Navbar.tsx";
-import {useLocation} from "react-router-dom";
 import {DashboardContainer} from "../../features/boardManagement/ui/DashboardContainer.tsx";
-import {getUserBoards} from "../../features/boardManagement/model/getUserBoardsThunk.ts";
 
 export const Dashboard: React.FC = () => {
-  const location = useLocation();
-  const user = useAppSelector(state => state.auth);
-  const dispatch = useAppDispatch();
-
-  if (user.user !== null && user.token !== null) {
-    localStorage.setItem("token", user.token);
-    localStorage.setItem("email", user.user.email);
-  }
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      dispatch(getUserBoards({ token: storedToken }));
-    } else if (user.token) {
-      localStorage.setItem("token", user.token);
-      dispatch(getUserBoards({ token: user.token }));
-    }
-  }, [user.token]);
 
   return (
     <div>
@@ -50,7 +29,7 @@ export const Dashboard: React.FC = () => {
           <h2 style={{
             fontSize: "18px",
             marginBottom: "16px",
-            backgroundColor: location.pathname === "/dashboard" ? "#ade8f4" : "#ffffff",
+            backgroundColor: "#ade8f4",
             padding: "10px",
             borderRadius: "5px"
           }}>
@@ -59,7 +38,7 @@ export const Dashboard: React.FC = () => {
           <h2 style={{
             fontSize: "18px",
             marginBottom: "16px",
-            backgroundColor: location.pathname === "/templates" ? "#ade8f4" : "#ffffff",
+            backgroundColor: "#ade8f4",
             padding: "10px",
             borderRadius: "5px"
           }}>

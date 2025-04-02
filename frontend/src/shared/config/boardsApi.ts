@@ -26,11 +26,11 @@ interface RenameUserBoardData {
 }
 
 export const getAllUserBoardsApi = (data: GetAllUserBoards) => {
-  return apiClient.post('/board/get_all_user_boards', data);
+  return apiClient.get('/board/get_all_user_boards', { params: data });
 };
 
 export const getOneUserBoardApi = (data: GetOneUserBoard) => {
-  return apiClient.post('/board/get_one_user_board', data);
+  return apiClient.get('/board/get_one_user_board', { params: data });
 };
 
 export const createUserBoardApi = (data: CreateUserBoardData) => {

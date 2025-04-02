@@ -1,12 +1,19 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useAppDispatch, useAppSelector} from "../../../app/store.ts";
 import {getOneBoard} from "../model/getOneBoardThunk.ts";
 import {useNavigate} from "react-router-dom";
+import {getUserBoards} from "../model/getUserBoardsThunk.ts";
 
 export const DashboardContainer: React.FC = () => {
-  const allBoards = useAppSelector(state => state.getUserBoards);
-  const token = localStorage.getItem("token");
+  const userInfo = useAppSelector(state => state.auth);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(getUserBoards({userId: userInfo.user.id}));
+  }, [dispatch, userInfo]);
+
+  const allBoards = useAppSelector(state => state.getUserBoards);
+
   const navigate = useNavigate();
 
   return (
@@ -40,10 +47,8 @@ export const DashboardContainer: React.FC = () => {
                         cursor: "pointer",
                       }}
                       onClick={() => {
-                        if (token !== null) {
-                          dispatch(getOneBoard({id: token, boardId: content.id, token: token}));
-                          navigate("/board");
-                        }
+                        dispatch(getOneBoard({userId: userInfo.user.id, boardId: content.id}));
+                        navigate("/board");
                       }}
               >{content.title}</button>
             ))
@@ -74,10 +79,8 @@ export const DashboardContainer: React.FC = () => {
                         cursor: "pointer",
                       }}
                       onClick={() => {
-                        if (token !== null) {
-                          dispatch(getOneBoard({id: token, boardId: content.id, token: token}));
-                          navigate("/board");
-                        }
+                        dispatch(getOneBoard({userId: userInfo.user.id, boardId: content.id}));
+                        navigate("/board");
                       }}
               >{content.title}</button>
             ))

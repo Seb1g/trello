@@ -1,46 +1,26 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {createBoards} from "./createBoardThunk";
 
-interface Card {
-  id: number;
-  content: string;
-}
-
-interface Cards {
-  data: Card[];
-}
-
-interface Column {
+interface Board {
+  id: string;
   title: string;
-  cards: Cards;
-}
-
-export interface Board {
-  columns: Column[];
-  id: number;
-  userId: string;
-  title: string;
+  userId: number;
 }
 
 export interface BoardState {
-  board: Board;
+  board: Board | null;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: BoardState = {
-  board: {
-    id: 0,
-    userId: "",
-    title: "",
-    columns: [],
-  },
+  board: null,
   loading: false,
   error: null,
 };
 
 
-export const createBoardSlice = createSlice({
+const createBoardSlice = createSlice({
   name: 'createBoard',
   initialState,
   reducers: {
@@ -60,3 +40,5 @@ export const createBoardSlice = createSlice({
     });
   },
 });
+
+export default createBoardSlice.reducer;

@@ -1,24 +1,9 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {getUserBoards} from "./getUserBoardsThunk.ts";
 
-interface Card {
-  id: number;
-  content: string;
-}
-
-interface Cards {
-  data: Card[];
-}
-
-interface Column {
-  title: string;
-  cards: Cards;
-}
-
 export interface Board {
-  columns: Column[];
-  id: number;
-  userId: string;
+  id: string;
+  userId: number;
   title: string;
 }
 
@@ -34,7 +19,7 @@ const initialState: BoardsState = {
   error: null,
 };
 
-export const getUserBoardsSlice = createSlice({
+const getUserBoardsSlice = createSlice({
   name: 'getUserBoard',
   initialState,
   reducers: {
@@ -54,3 +39,5 @@ export const getUserBoardsSlice = createSlice({
     });
   },
 });
+
+export default getUserBoardsSlice.reducer;

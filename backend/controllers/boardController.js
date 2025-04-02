@@ -13,7 +13,7 @@ class BoardController {
 
     async getOneUserBoard(req, res, next) {
         try {
-            const {boardId, userId} = req.body;
+            const {boardId, userId} = req.query;
             const oneUserBoard = await boardService.getOneUserBoard(boardId, userId);
             return res.json(oneUserBoard);
         } catch (e) {
@@ -23,7 +23,7 @@ class BoardController {
 
     async getAllUserBoards(req, res, next) {
         try {
-            const {userId} = req.body;
+            const userId = req.query.userId;
             const allUserBoards = await boardService.getAllUserBoards(userId);
             return res.json(allUserBoards);
         } catch (e) {

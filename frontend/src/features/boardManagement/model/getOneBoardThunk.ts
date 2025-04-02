@@ -1,7 +1,25 @@
 import {getOneUserBoardApi} from '../../../shared/config/boardsApi.ts';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import axios from 'axios';
-import {Board} from "./createBoardSlice.ts";
+
+interface Cards {
+  id: string;
+  content: string;
+  position: number;
+}
+
+interface Columns {
+  id: string;
+  title: string;
+  position: number;
+  cards: Cards[];
+}
+
+interface Board {
+  title: string;
+  id: string;
+  columns: Columns[];
+}
 
 interface GetOneBoardThunk {
   boardId: string;
@@ -19,7 +37,7 @@ export const getOneBoard = createAsyncThunk<
   Board,
   GetOneBoardThunk,
   { rejectValue: string }
->('board/get_board', async (credentials, {rejectWithValue}) => {
+>('board/get_one_user_board', async (credentials, {rejectWithValue}) => {
   try {
     const response = await getOneUserBoardApi(credentials);
     return response.data;

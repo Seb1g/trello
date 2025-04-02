@@ -9,8 +9,8 @@ export const KanbanBoard: React.FC = () => {
       display: "flex", gap: "1rem", padding: "10px"
     }}>
       {board && typeof board.board.columns === "object" ? (
-        Object.values(board.board.columns).map((column, index) => (
-          <Column key={index} column={column} />
+        Object.values(board.board.columns).map((columns, index) => (
+          <Column key={index} column={columns} />
         ))
       ) : (
         <div>No columns available</div>
@@ -19,21 +19,20 @@ export const KanbanBoard: React.FC = () => {
   );
 };
 
-interface Card {
-  id: number;
-  content: string;
-}
-
 interface Cards {
-  data: Card[];
+  id: string;
+  content: string;
+  position: number;
 }
 
-interface Column {
+interface Columns {
+  id: string;
   title: string;
-  cards: Cards;
+  position: number;
+  cards: Cards[];
 }
 
-const Column: React.FC<{ column: Column }> = ({ column }) => {
+const Column: React.FC<{ column: Columns }> = ({ column }) => {
   const [title, setTitle] = useState(column.title);
   const [isEditing, setIsEditing] = useState(false);
 

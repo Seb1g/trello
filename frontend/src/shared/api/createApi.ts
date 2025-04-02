@@ -9,20 +9,16 @@ export interface AuthResponse {
 export interface IUser {
   email: string;
   isActivated: boolean;
-  id: string;
+  id: number;
 }
 
 const apiClient = axios.create({
   baseURL: 'http://localhost:5000',
+  withCredentials: true,
 });
 
 apiClient.interceptors.request.use(
   (config) => {
-    config.headers = config.headers || {};
-
-    if (!config.headers['Content-Type']) {
-      config.headers['Content-Type'] = 'application/json';
-    }
     const token: string | null = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;

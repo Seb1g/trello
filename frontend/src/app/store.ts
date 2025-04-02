@@ -2,15 +2,15 @@ import {configureStore} from '@reduxjs/toolkit';
 import {useDispatch, useSelector, TypedUseSelectorHook} from 'react-redux';
 
 import authReducer from '../features/auth/model/authSlice.ts';
-import {createBoardSlice} from "../features/boardManagement/model/createBoardSlice.ts";
-import {getUserBoardsSlice} from "../features/boardManagement/model/getUserBoardsSlice.ts";
+import createBoardSlice from "../features/boardManagement/model/createBoardSlice.ts";
+import getUserBoardsSlice from "../features/boardManagement/model/getUserBoardsSlice.ts";
 import {getOneBoardSlice} from "../features/boardManagement/model/getOneBoardSlice.ts";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    createBoard: createBoardSlice.reducer,
-    getUserBoards: getUserBoardsSlice.reducer,
+    createBoard: createBoardSlice,
+    getUserBoards: getUserBoardsSlice,
     getOneBoard: getOneBoardSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>

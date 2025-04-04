@@ -36,7 +36,7 @@ const initialState: BoardsState = {
   error: null,
 };
 
-export const getOneBoardSlice = createSlice({
+const getOneBoardSlice = createSlice({
   name: 'getOneBoard',
   initialState,
   reducers: {
@@ -56,3 +56,5 @@ export const getOneBoardSlice = createSlice({
     });
   },
 });
+
+export default getOneBoardSlice.reducer;

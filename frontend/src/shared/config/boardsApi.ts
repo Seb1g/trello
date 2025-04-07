@@ -25,6 +25,25 @@ interface RenameUserBoardData {
   newName: string;
 }
 
+interface CardsData {
+  id: string;
+  content: string;
+  position: number;
+}
+
+interface BoardData {
+  id: string;
+  title: string;
+  position: number;
+  cards: CardsData[];
+}
+
+interface UpdateBoardData {
+  boardId: string;
+  boardData: BoardData[];
+  userId: number;
+}
+
 export const getAllUserBoardsApi = (data: GetAllUserBoards) => {
   return apiClient.get('/board/get_all_user_boards', { params: data });
 };
@@ -43,4 +62,8 @@ export const deleteUserBoardApi = (data: DeleteUserBoardData) => {
 
 export const renameUserBoardApi = (data: RenameUserBoardData) => {
   return apiClient.post('/board/rename_board', data);
+};
+
+export const updateBoardApi = (data: UpdateBoardData) => {
+  return apiClient.post('/board/update_board', data);
 };

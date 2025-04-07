@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {useAppSelector} from "../../app/store.ts";
+import {useAppDispatch, useAppSelector} from "../../app/store.ts";
 import {DndProvider, useDrag, useDrop, DropTargetMonitor} from "react-dnd";
 import {HTML5Backend} from "react-dnd-html5-backend";
 import {motion} from "framer-motion";
+import {updateBoardThunk} from "../../features/boardManagement/model/updateBoardThunk.ts";
 
 const ItemType = {
   ITEM: "item",
@@ -110,11 +111,11 @@ const DroppableColumn: React.FC<{
   id: string;
   title: string;
   cards: Card[];
-  columns: Columns;
+  onColumnDrop?: () => void;
   moveItem: (id: string, columnId: string, targetIndex?: number) => void;
   moveColumn: (dragIndex: number, hoverIndex: number) => void;
   index: number;
-}> = ({id, title, cards, moveItem, moveColumn, index}) => {
+}> = ({id, title, cards, moveItem, moveColumn, index, onColumnDrop}) => {
 
   const columnRef = useRef<HTMLDivElement | null>(null);
 
@@ -151,8 +152,8 @@ const DroppableColumn: React.FC<{
       moveColumn(dragIndex, hoverIndex);
       item.index = hoverIndex;
     },
-    drop: (item: DragItem) => {
-      dispatch(updateBoard(columns));
+    drop: () => {
+      onColumnDrop?.();
     }
   });
 
@@ -190,8 +191,8 @@ const DroppableColumn: React.FC<{
         moveItem(item.id, hoverColumnId, hoverIndex);
       }
     },
-    drop: (item: DragItem) => {
-      dispatch(updateBoard(columns));
+    drop: () => {
+      onColumnDrop?.();
     }
   });
 
@@ -333,6 +334,7 @@ const DroppableColumn: React.FC<{
 
 export const KanbanBoard: React.FC = () => {
   const board = useAppSelector((state) => state.getOneBoard);
+  const userData = useAppSelector((state) => state.auth.user.id);
 
   const [columns, setColumns] = useState<Array<Columns>>([]);
 
@@ -420,6 +422,19 @@ export const KanbanBoard: React.FC = () => {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [setOpenNewColumn]);
 
+  const formatColumnsForSaving = (columns: Columns[]) => {
+    return columns.map((col, colIndex) => ({
+      ...col,
+      position: colIndex + 1,
+      cards: col.cards.map((card, cardIndex) => ({
+        ...card,
+        position: cardIndex + 1,
+      })),
+    }));
+  };
+
+  const dispatch = useAppDispatch();
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div style={{display: "flex", gap: "1rem", padding: "10px"}}>
@@ -429,7 +444,11 @@ export const KanbanBoard: React.FC = () => {
             id={column.id}
             title={column.title}
             cards={column.cards}
-            columns={column}
+            onColumnDrop={() => {
+              const formatted = formatColumnsForSaving(columns);
+              console.log("ready to send to API", formatted, board.board.id);
+              dispatch(updateBoardThunk({boardId: board.board.id, boardData: formatted, userId: userData}))
+            }}
             moveItem={moveItem}
             moveColumn={moveColumn}
             index={index}

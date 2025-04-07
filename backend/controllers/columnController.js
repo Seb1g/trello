@@ -21,16 +21,6 @@ class ColumnController {
         }
     }
 
-    async moveColumn(req, res, next) {
-        try {
-            const {boardId, userId, columnId, newPosition} = req.body;
-            const column = await columnService.moveColumn(boardId, userId, columnId, newPosition);
-            return res.json(column);
-        } catch (e) {
-            next(e);
-        }
-    }
-
     async renameColumn(req, res, next) {
         try {
             const {boardId, columnId, newName} = req.body;

@@ -46,8 +46,19 @@ class BoardController {
         try {
             const {boardId, userId, newName} = req.body;
             const board = await boardService.renameBoard(boardId, userId, newName);
-            if (!board) return res.status(404).json({ message: 'Board not found' });
+            if (!board) return res.status(404).json({message: 'Board not found'});
             return res.json(board);
+        } catch (e) {
+            next(e);
+        }
+    }
+
+    async updateBoard(req, res, next) {
+        try {
+            const {boardId, boardData, userId} = req.body;
+            const board = await boardService.updateBoard(boardId, boardData, userId);
+            if (!board) return res.status(404).json({message: 'Board not found'});
+            return res.json({message: 'Board updated successfully', board});
         } catch (e) {
             next(e);
         }

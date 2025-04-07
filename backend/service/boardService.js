@@ -116,6 +116,37 @@ class BoardService {
         if (result.rows.length === 0) return null;
         return new BoardDTO(result.rows[0]);
     };
+
+    async updateBoard(boardId, boardData, userId) {
+        // 1. Проверяем, принадлежит ли доска пользователю
+        const boardCheck = await pool.query(
+            'SELECT * FROM boards WHERE id = $1 AND user_id = $2',
+            [boardId, userId]
+        );
+        if (boardCheck.rows.length === 0) {
+            throw new Error('Board not found or access denied');
+        }
+
+        // 2. Обновляем позиции колонок и карточек
+        for (let i = 0; i < boardData.length; i++) {
+            const col = boardData[i];
+
+            await pool.query(
+                'UPDATE columns SET position = $1, column_title = $2 WHERE id = $3 AND board_id = $4',
+                [i + 1, col.title, col.id, boardId]
+            );
+
+            for (let j = 0; j < col.cards.length; j++) {
+                const card = col.cards[j];
+
+                await pool.query(
+                    'UPDATE cards SET position = $1, column_id = $2 WHERE id = $3',
+                    [j + 1, col.id, card.id]
+                );
+            }
+        }
+        return {success: true};
+    }
 }
 
 module.exports = new BoardService();

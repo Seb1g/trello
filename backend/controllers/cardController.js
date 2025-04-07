@@ -21,24 +21,6 @@ class CardController {
         }
     }
 
-    async moveCardBetweenColumns(req, res, next) {
-        try {
-            const {oldColumnId, cardId, newColumnId, newPosition} = req.body;
-            const success = await cardService.moveCardBetweenColumns(oldColumnId, cardId, newColumnId, newPosition);
-            return res.json(success);
-        } catch (e) {
-            next(e);
-        }
-    }
-    async moveCardInColumn (req, res, next) {
-        try {
-            const {columnId, cardId, newPosition} = req.body;
-            const success = await cardService.moveCardInColumn(columnId, cardId, newPosition);
-            return res.json(success);
-        } catch (e) {
-            next(e);
-        }
-    }
     async renameCard(req, res, next) {
         try {
             const {columnId, cardId, newName} = req.body;

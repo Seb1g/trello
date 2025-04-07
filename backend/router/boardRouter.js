@@ -8,5 +8,6 @@ router.get('/get_one_user_board', authMiddleware, BoardController.getOneUserBoar
 router.get('/get_all_user_boards', authMiddleware, BoardController.getAllUserBoards);
 router.delete('/delete_board', authMiddleware, BoardController.deleteBoard);
 router.put('/rename_board', authMiddleware, BoardController.renameBoard);
+router.post('/update_board', authMiddleware, BoardController.updateBoard);
 
 module.exports = router;

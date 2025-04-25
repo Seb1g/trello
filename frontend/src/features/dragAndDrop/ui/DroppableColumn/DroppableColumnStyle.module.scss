@@ -1,0 +1,61 @@
+.column {
+  opacity: 1;
+  rotate: none;
+  padding: 16px;
+  background-color: lightgray;
+  border-radius: 8px;
+  margin: 0 8px;
+  height: fit-content;
+  min-height: 75px;
+
+  &.isDragging {
+    opacity: 0.5;
+    rotate: 5deg;
+  }
+
+  .content {
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 0 8px 0;
+  }
+
+  .editInput {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #0079bf;
+    border-radius: 4px;
+    outline: none;
+    margin-bottom: 8px;
+  }
+
+  .cards {
+    min-width: 150px;
+    min-height: 0;
+
+    .textArea {
+      width: 100%;
+      height: 76px;
+      padding: 5px;
+      border: 1px solid #0079bf;
+      border-radius: 4px;
+      outline: none;
+    }
+
+    .buttonBox {
+      display: flex;
+      gap: 20px;
+    }
+  }
+
+  .createColumnButton {
+    align-items: center;
+    border: none;
+    background-color: lightgray;
+    text-align: center;
+    color: #5e6c84;
+    font-size: 14px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+}

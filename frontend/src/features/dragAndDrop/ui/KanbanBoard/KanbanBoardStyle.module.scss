@@ -1,0 +1,62 @@
+.kanbanBoard {
+  display: flex;
+  gap: 1rem;
+  padding: 10px;
+
+  .newColumnContainer {
+    opacity: 1;
+    transform: none;
+
+    .createColumnContainer {
+      display: flex;
+      background-color: lightgray;
+      flex-direction: column;
+      color: black;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      justify-content: center;
+      align-items: center;
+      min-width: 250px;
+      min-height: 45px;
+      margin: 8px;
+      border-radius: 8px;
+      gap: 20px;
+      padding: 16px;
+
+      .newColumnInput.input {
+        width: 220px;
+        padding: 5px;
+        border: 1px solid #0079bf;
+        border-radius: 4px;
+        outline: none;
+      }
+
+      .createColumnButtonsContainer {
+        display: flex;
+        gap: 20px;
+        flex-direction: row;
+      }
+    }
+
+    .openMenuCreateColumnContainer {
+      background-color: lightgray;
+      color: black;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 200px;
+      height: 45px;
+      margin: 8px;
+      border-radius: 8px;
+
+      &:hover {
+        cursor: pointer;
+        background-color: gray;
+      }
+    }
+  }
+}

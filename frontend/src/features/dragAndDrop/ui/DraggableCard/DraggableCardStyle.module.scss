@@ -1,0 +1,28 @@
+.card {
+  padding: 8px;
+  margin: 4px;
+  background-color: lightblue;
+  cursor: grab;
+  border-radius: 4px;
+  gap: 20px;
+
+  &.isDragging {
+    opacity: 0.5;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .content {
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .editInput {
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #0079bf;
+    border-radius: 4px;
+    outline: none;
+  }
+}
